@@ -1,0 +1,15 @@
+[project]
+name = "bake-off"
+version = "0.1.0"
+description = "Run five coding agents in parallel git worktrees and keep the one that passes tests it never saw."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "groq==1.7.0",
+    "pytest==9.2.0",
+    "python-dotenv==1.2.4",
+]
+
+[tool.pytest.ini_options]
+# Only the harness's own tests. sample/ and hidden_tests/ are run by the judge, per lane.
+testpaths = ["tests"]

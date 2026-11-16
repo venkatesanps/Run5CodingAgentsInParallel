@@ -1,0 +1,24 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.13"
+      - run: uv sync
+      - name: Harness tests (offline, no API key)
+        run: uv run pytest -q
+        env:
+          PYTHONPATH: .
+          PYTHONUTF8: "1"
+      - name: Fake race end to end
+        run: uv run python -m src.main race --fake
+        env:
+          PYTHONPATH: .
+          PYTHONUTF8: "1"
